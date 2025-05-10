@@ -1,4 +1,4 @@
-package com.example.mrellobackend;
+package com.example.mrellobackend.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

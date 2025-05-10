@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@PasswordsMatch
+@PasswordsMatch
 public class RegisterRequest {
 
     private String firstName;
