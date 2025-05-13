@@ -17,6 +17,9 @@ import lombok.NoArgsConstructor;
 @PasswordsMatch
 public class RegisterRequest {
 
+    @NotBlank(message = "Username is required")
+    private String username;
+
     private String firstName;
 
     private String lastName;

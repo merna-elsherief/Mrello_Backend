@@ -22,6 +22,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
         // Create user from request
         User user = User.builder()
+                .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstName(request.getFirstName())
@@ -43,13 +44,13 @@ public class AuthenticationService {
         // step 1: verify credentials
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
 
         // step 2: fetch user
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         // step 3: generate token
