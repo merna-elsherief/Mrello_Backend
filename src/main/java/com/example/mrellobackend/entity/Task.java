@@ -1,10 +1,14 @@
-package com.example.mrellobackend.entities;
+package com.example.mrellobackend.entity;
 
+import com.example.mrellobackend.auth.user.User;
+import com.example.mrellobackend.dao.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -27,4 +31,13 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "column_id")
     private Column column;
+
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
+    private LocalDate dueDate;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_user_id")
+    private User assignedUser;
 }

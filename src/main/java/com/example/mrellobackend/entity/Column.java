@@ -1,4 +1,4 @@
-package com.example.mrellobackend.entities;
+package com.example.mrellobackend.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,8 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "boards")
-public class Board {
+@Table(name = "columns")
+public class Column {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,12 +22,12 @@ public class Board {
 
     private String title;
 
-    private String description;
+    private Integer position;
 
     @ManyToOne
-    @JoinColumn(name = "workspace_id")
-    private Workspace workspace;
+    @JoinColumn(name = "board_id")
+    private Board board;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Column> columns;
+    @OneToMany(mappedBy = "column", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
 }

@@ -1,5 +1,6 @@
 package com.example.mrellobackend.auth.user;
 
+import com.example.mrellobackend.entity.Workspace;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +21,10 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
 
+    @Column(nullable = false,unique = true)
+    private String username;
 
     @Column(nullable = true)
     private String firstName;
@@ -35,6 +38,12 @@ public class User implements UserDetails {
     @Column(nullable = false,unique = true)
     private String email;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Workspace> ownedWorkspaces;
+
+    @ManyToMany(mappedBy = "members")
+    private List<Workspace> memberWorkspaces;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -47,7 +56,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
