@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/boards/{boardId}/columns")
+@RequestMapping("/api/v1/columns")
 @RequiredArgsConstructor
 public class ColumnController {
 

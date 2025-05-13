@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/workspaces/{workspaceId}/boards")
+@RequestMapping("/api/v1/boards")
 @RequiredArgsConstructor
 public class BoardController {
 
