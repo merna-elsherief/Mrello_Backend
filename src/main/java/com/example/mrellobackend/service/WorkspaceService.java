@@ -2,6 +2,8 @@ package com.example.mrellobackend.service;
 
 import com.example.mrellobackend.auth.user.User;
 import com.example.mrellobackend.auth.user.UserRepository;
+import com.example.mrellobackend.dto.WorkspaceCreateDto;
+import com.example.mrellobackend.dto.WorkspaceDto;
 import com.example.mrellobackend.entity.Workspace;
 import com.example.mrellobackend.exception.ResourceNotFoundException;
 import com.example.mrellobackend.repository.WorkspaceRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +27,28 @@ public class WorkspaceService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found!"));
     }
-    public Workspace createWorkspace(Workspace workspace) {
-        User currentUser = getCurrentUser();
-        workspace.setOwner(currentUser);
-        return workspaceRepository.save(workspace);
+    public static WorkspaceDto convertToDto(Workspace workspace) {
+        if (workspace == null) return null;
+
+        return WorkspaceDto.builder()
+                .id(workspace.getId())
+                .title(workspace.getTitle())
+                .description(workspace.getDescription())
+                .ownerId(workspace.getOwner() != null ? workspace.getOwner().getId() : null)
+                .memberIds(workspace.getMembers() != null
+                        ? workspace.getMembers().stream()
+                        .map(user -> user.getId())
+                        .collect(Collectors.toList())
+                        : null)
+                .build();
+    }
+    public WorkspaceDto createWorkspace(WorkspaceCreateDto workspaceCreateDto) {
+        Workspace savedWorkspace = new Workspace();
+        savedWorkspace.setOwner(getCurrentUser());
+        savedWorkspace.setTitle(workspaceCreateDto.getTitle());
+        savedWorkspace.setDescription(workspaceCreateDto.getDescription());
+        workspaceRepository.save(savedWorkspace);
+        return convertToDto(savedWorkspace);
     }
 
     public Workspace addMember(Long workspaceId, Long userId) {
@@ -55,7 +76,7 @@ public class WorkspaceService {
         return workspaceRepository.save(workspace);
     }
 
-    public Workspace updateWorkspace(Long workspaceId, Workspace updatedWorkspace) {
+    public WorkspaceDto updateWorkspace(Long workspaceId, WorkspaceDto updatedWorkspace) {
         User currentUser = getCurrentUser();
         Workspace existingWorkspace = workspaceRepository.findById(workspaceId)
                 .orElseThrow(() -> new ResourceNotFoundException("Workspace not found"));
@@ -67,7 +88,9 @@ public class WorkspaceService {
         existingWorkspace.setTitle(updatedWorkspace.getTitle());
         existingWorkspace.setDescription(updatedWorkspace.getDescription());
 
-        return workspaceRepository.save(existingWorkspace);
+        Workspace savedWorkspace = workspaceRepository.save(existingWorkspace);
+
+        return convertToDto(savedWorkspace);
     }
 
     public List<Workspace> getCurrentUserWorkspaces() {

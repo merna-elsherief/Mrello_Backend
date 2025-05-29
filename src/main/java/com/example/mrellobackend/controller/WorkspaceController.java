@@ -1,5 +1,7 @@
 package com.example.mrellobackend.controller;
 
+import com.example.mrellobackend.dto.WorkspaceCreateDto;
+import com.example.mrellobackend.dto.WorkspaceDto;
 import com.example.mrellobackend.entity.Workspace;
 import com.example.mrellobackend.service.WorkspaceService;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +19,17 @@ public class WorkspaceController {
     private final WorkspaceService workspaceService;
 
     @PostMapping
-    public ResponseEntity<Workspace> createWorkspace(@RequestBody Workspace workspace) {
-        Workspace createdWorkspace = workspaceService.createWorkspace(workspace);
+    public ResponseEntity<WorkspaceDto> createWorkspace(@RequestBody WorkspaceCreateDto workspaceCreateDto) {
+        WorkspaceDto createdWorkspace = workspaceService.createWorkspace(workspaceCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdWorkspace);
+    }
+    @PutMapping("/{workspaceId}")
+    public ResponseEntity<WorkspaceDto> updateWorkspace(
+            @PathVariable Long workspaceId,
+            @RequestBody WorkspaceDto updateRequest) {
+
+        WorkspaceDto updatedWorkspace = workspaceService.updateWorkspace(workspaceId, updateRequest);
+        return ResponseEntity.ok(updatedWorkspace);
     }
 
     @GetMapping("/my-workspaces")
@@ -45,6 +55,6 @@ public class WorkspaceController {
     @DeleteMapping("/{workspaceId}")
     public ResponseEntity<Void> deleteWorkspace(@PathVariable Long workspaceId) {
         workspaceService.deleteWorkspace(workspaceId);
-        return ResponseEntity.noContent().build(); // 204 No Content
+        return ResponseEntity.noContent().build();
     }
 }

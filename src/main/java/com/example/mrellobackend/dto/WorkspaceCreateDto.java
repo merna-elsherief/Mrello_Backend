@@ -1,5 +1,6 @@
 package com.example.mrellobackend.dto;
 
+import com.example.mrellobackend.auth.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -18,5 +18,4 @@ public class WorkspaceDto {
     private String description;
     private Long ownerId;
     private List<Long> memberIds;
-    private LocalDateTime createdAt;
 }
