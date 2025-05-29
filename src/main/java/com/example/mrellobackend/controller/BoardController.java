@@ -4,6 +4,7 @@ import com.example.mrellobackend.dto.BoardCreateDto;
 import com.example.mrellobackend.dto.BoardDto;
 import com.example.mrellobackend.entity.Board;
 import com.example.mrellobackend.service.BoardService;
+import com.example.mrellobackend.service.BoardServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
